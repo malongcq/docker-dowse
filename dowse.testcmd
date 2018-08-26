@@ -1,0 +1,39 @@
+xxxIP_ADDRxxx
+xxxPORTxxx
+xxxINSTANCExxx
+xxxDATABASExxx
+xxxUSERNAMExxx
+xxxPASSWORDxxx
+
+
+Oracle
+sqlplus "xxxUSERNAMExxx/xxxPASSWORDxxx@(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=xxxIP_ADDRxxx)(PORT=xxxPORTxxx)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=xxxDATABASExxx)))"
+select 1 from dual;
+
+MS SQL server
+tsql -C
+echo "USE xxxDATABASExxx; GO; SELECT 1; GO">tmpsql; tsql -S xxxIP_ADDRxxx\\xxxINSTANCExxx -U xxxUSERNAMExxx -P xxxPASSWORDxxx <tmpsql
+
+MySQL
+mysql -h xxxIP_ADDRxxx -u xxxUSERNAMExxx -pxxxPASSWORDxxx -A xxxDATABASExxx
+select 1;
+
+PostgreSQL
+PGPASSWORD=xxxPASSWORDxxx psql -h xxxIP_ADDRxxx -p xxxPORTxxx -U xxxUSERNAMExxx -w xxxDATABASExxx
+select 1;
+
+Python
+import pandas as pd
+from sqlalchemy import create_engine
+
+conn = create_engine("oracle://xxxUSERNAMExxx:xxxPASSWORDxxx@(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=xxxIP_ADDRxxx)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=xxxDATABASExxx)))")
+pd.read_sql("select 1 from dual", conn)
+
+conn = create_engine("mssql+pymssql://xxxUSERNAMExxx:xxxPASSWORDxxx@xxxIP_ADDRxxx\xxxINSTANCExxx/xxxDATABASExxx")
+pd.read_sql("select 1", conn)
+
+conn = create_engine("mysql+mysqlconnector://xxxUSERNAMExxx:xxxPASSWORDxxx@xxxIP_ADDRxxx:3306/xxxDATABASExxx")
+pd.read_sql("select 1", conn)
+
+conn = create_engine('postgresql://xxxUSERNAMExxx:xxxPASSWORDxxx@xxxIP_ADDRxxx:5432/xxxDATABASExxx')
+pd.read_sql("select 1", conn)
